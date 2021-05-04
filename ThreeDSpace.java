@@ -1,17 +1,10 @@
  import java.util.ArrayList;
 
-import javafx.*;
 import javafx.application.Application;
-import javafx.geometry.Point3D;
 import javafx.scene.*;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.PickResult;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
@@ -28,6 +21,7 @@ public class ThreeDSpace extends Application {
     private Color c = null;
 	private ArrayList<Box> boxes = new ArrayList<>();
 	private ArrayList<Sphere> sph = new ArrayList<>();
+	Group shapes = new Group();
 
     private final Rotate rotateX = new Rotate(1, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(1, Rotate.Y_AXIS);
@@ -52,14 +46,20 @@ public class ThreeDSpace extends Application {
     	
     	
     	
-        Sphere sphere = new Sphere(side/3);
-        sphere.setMaterial(new PhongMaterial(Color.RED));
-        sphere.setTranslateX(500);
-        sphere.setTranslateY(500);
-       // sphere.setTranslateZ(-55);
-        sph.add(sphere);
+//        Sphere sphere = new Sphere(side/3);
+//        sphere.setMaterial(new PhongMaterial(Color.RED));
+//        sphere.setTranslateX(500);
+//        sphere.setTranslateY(500);
+//       // sphere.setTranslateZ(-55);
+//        sph.add(sphere);
     	
-    	Group shapes = new Group();
+    	Ball ball = new Ball(500,500,0,50);
+    	shapes.getChildren().add(ball);
+    	
+    	Platform platform = new Platform(500,50,10);
+    	platform.Init(200, 1000);
+    	shapes.getChildren().add(platform);
+    	
     	shapes.getChildren().addAll(boxes);
     	shapes.getChildren().addAll(sph);
     	shapes.setTranslateX(-150);
@@ -77,9 +77,9 @@ public class ThreeDSpace extends Application {
         camera.setFarClip(100000.0);
         camera.getTransforms().addAll (rotateX, rotateY, new Translate(0, 0, -3000));
 
-        PointLight light = new PointLight(Color.ANTIQUEWHITE);
-        root.getChildren().add(light);
-        root.getChildren().add(new AmbientLight(Color.WHITE));
+        //PointLight light = new PointLight(Color.ANTIQUEWHITE);
+        //root.getChildren().add(light);
+        //root.getChildren().add(new AmbientLight(Color.WHITE));
         scene.setCamera(camera);
 
 
