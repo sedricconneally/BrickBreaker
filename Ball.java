@@ -31,26 +31,51 @@ public class Ball extends Sphere{
 	
 	public void init() {
 		relocate(x, y);
-        timeLine = new Timeline(new KeyFrame(Duration.millis(5), e -> mvBall()));
-		timeLine.setCycleCount(Timeline.INDEFINITE);
+//        timeLine = new Timeline(new KeyFrame(Duration.millis(5), e -> mvBall()));
+//		timeLine.setCycleCount(Timeline.INDEFINITE);
 		
 	}
 
-	public void dragged(double mouseX, double mouseY) {
-		System.out.println("x = " + x + " y = " + y + " mouseX = " + mouseX + " mouseY = " + mouseY);
-        this.setTranslateX(mouseX);
-        this.setTranslateY(mouseY);
-		
-	}
+//	public void dragged(double mouseX, double mouseY) {
+//		System.out.println("x = " + x + " y = " + y + " mouseX = " + mouseX + " mouseY = " + mouseY);
+//        this.setTranslateX(mouseX);
+//        this.setTranslateY(mouseY);
+//		
+//	}
 	
-	public void mvBall() {
-		if(getLayoutX() < -440 || getLayoutX() > 430) deltaX *= -1;
-		if(getLayoutY() < -440 || getLayoutY() > 430) deltaY *= -1;
-		setLayoutX(getLayoutX() + deltaX);
-		setLayoutY( getLayoutY() + deltaY);
-		System.out.println("x = " + getLayoutX() + " y = " + getLayoutY());
-		
+//	public void mvBall() {
+//		if(getLayoutX() < -440 || getLayoutX() > 430) {
+//			deltaX *= -1;
+//		}
+//		if(getLayoutY() < -440 || getLayoutY() > 430) {
+//			deltaY *= -1;
+//		}
+//		
+//		setLayoutX(getLayoutX() + deltaX);
+//		setLayoutY( getLayoutY() + deltaY);
+//		System.out.println("x = " + getLayoutX() + " y = " + getLayoutY());
+//		
+//	}
+
+	public double getDeltaX() {
+		return deltaX;
 	}
+
+
+	public void setDeltaX(double deltaX) {
+		this.deltaX = deltaX;
+	}
+
+
+	public double getDeltaY() {
+		return deltaY;
+	}
+
+
+	public void setDeltaY(double deltaY) {
+		this.deltaY = deltaY;
+	}
+
 
 	public void picked() {
 		timeLine.play();

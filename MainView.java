@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
@@ -9,6 +12,7 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainView extends Application {
 
@@ -18,9 +22,9 @@ public class MainView extends Application {
     private PerspectiveCamera camera;
     private final double sceneWidth = 1000;
     private final double sceneHeight = 1000;
-	private ArrayList<Box> boxes = new ArrayList<>();
     private final Rotate rotateX = new Rotate(50, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(1, Rotate.Y_AXIS);
+    private Timeline timeLine;
     
     
 
@@ -30,6 +34,27 @@ public class MainView extends Application {
         
         Ball ball = new Ball(50,-50,0,sceneWidth/40);
         ball.init();
+        
+        timeLine = new Timeline(new KeyFrame(Duration.millis(5), e -> {
+        	double dx = 3;
+        	double dy = 3;
+        	
+        	if(ball.getLayoutX() < -440 || ball.getLayoutX() > 430) {
+    			//dx = ball.getDeltaX();
+    			dx *= -1;
+    			//ball.setDeltaX(dx);
+    		}
+    		if(ball.getLayoutY() < -440 || ball.getLayoutY() > 430) {
+    			//dy = ball.getDeltaX();
+    			dy *= -1;
+    			//ball.setDeltaX(dy);
+    		}
+    		
+    		ball.setLayoutX(ball.getLayoutX() + dx);
+    		ball.setLayoutY(ball.getLayoutY() + dy);
+    		System.out.println("x = " + ball.getLayoutX() + " y = " + ball.getLayoutY() + " dx: " + dx + " dy: " + dy);
+        }));
+        timeLine.setCycleCount(Timeline.INDEFINITE);
         
         Paddle paddle = new Paddle(400,400,0,sceneWidth/40);
         paddle.init();
@@ -55,7 +80,8 @@ public class MainView extends Application {
         scene.setOnMousePressed(me -> {
             PickResult pr = me.getPickResult();
             if(pr!=null && pr.getIntersectedNode() instanceof Ball){
-            	ball.picked();
+//            	ball.picked();
+            	timeLine.play();
             }
         });
         
