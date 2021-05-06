@@ -1,14 +1,11 @@
-import java.util.ArrayList;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.geometry.Point3D;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.input.PickResult;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Sphere;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -34,26 +31,31 @@ public class MainView extends Application {
         
         Ball ball = new Ball(50,-50,0,sceneWidth/40);
         ball.init();
-        
-        timeLine = new Timeline(new KeyFrame(Duration.millis(5), e -> {
-        	double dx = 3;
-        	double dy = 3;
-        	
-        	if(ball.getLayoutX() < -440 || ball.getLayoutX() > 430) {
-    			//dx = ball.getDeltaX();
-    			dx *= -1;
-    			//ball.setDeltaX(dx);
-    		}
-    		if(ball.getLayoutY() < -440 || ball.getLayoutY() > 430) {
-    			//dy = ball.getDeltaX();
-    			dy *= -1;
-    			//ball.setDeltaX(dy);
-    		}
-    		
-    		ball.setLayoutX(ball.getLayoutX() + dx);
-    		ball.setLayoutY(ball.getLayoutY() + dy);
-    		System.out.println("x = " + ball.getLayoutX() + " y = " + ball.getLayoutY() + " dx: " + dx + " dy: " + dy);
+
+        timeLine = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+            double dx = 5;
+            double dy = 5;
+
+            @Override
+            public void handle(final ActionEvent t) {
+            	for(Node n: shapes.getChildren()) {
+            		System.out.println("Before if");
+            		if (n.getBoundsInLocal().intersects(ball.getBoundsInLocal())) {
+            			System.out.println("After if");
+            			if(ball.getLayoutX() < n.getLayoutX() || ball.getLayoutX() > n.getLayoutX()) {
+            				dx *= -1;
+            			}
+            			if(ball.getLayoutY() < n.getLayoutY() || ball.getLayoutY() > n.getLayoutY()) {
+            				dy *= -1;
+            			}
+            			
+            			ball.setLayoutX(ball.getLayoutX() + dx);
+            			ball.setLayoutY(ball.getLayoutY() + dy);
+            		}
+            	}
+            }
         }));
+
         timeLine.setCycleCount(Timeline.INDEFINITE);
         
         Paddle paddle = new Paddle(400,400,0,sceneWidth/40);
@@ -65,7 +67,7 @@ public class MainView extends Application {
         GameBoarder boarder = new GameBoarder(sceneWidth,sceneHeight,30);
         boarder.init();
         
-        root.getChildren().add(boarder.getBoarder());
+        shapes.getChildren().addAll(boarder.getBoarder().getChildren());
         root.getChildren().add(shapes);
         Scene scene = new Scene(root, sceneWidth, sceneHeight, true, SceneAntialiasing.BALANCED);
         scene.setFill(Color.GREY);
@@ -80,7 +82,6 @@ public class MainView extends Application {
         scene.setOnMousePressed(me -> {
             PickResult pr = me.getPickResult();
             if(pr!=null && pr.getIntersectedNode() instanceof Ball){
-//            	ball.picked();
             	timeLine.play();
             }
         });

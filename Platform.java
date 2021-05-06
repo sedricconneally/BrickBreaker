@@ -21,7 +21,6 @@ public class Platform extends Box{
 		this.setTranslateX(x);
 		this.setTranslateY(y);
 	}
-	
-	this.
+
 	
 }
