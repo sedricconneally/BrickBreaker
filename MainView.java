@@ -33,20 +33,25 @@ public class MainView extends Application {
         ball.init();
 
         timeLine = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
-            double dx = 5;
-            double dy = 5;
+            double dx = 3;
+            double dy = 3;
 
             @Override
             public void handle(final ActionEvent t) {
+            	ball.mvBall();
             	for(Node n: shapes.getChildren()) {
+            		System.out.println(n.getBoundsInLocal());
+            		System.out.println(n.getBoundsInParent());
             		System.out.println("Before if");
-            		if (n.getBoundsInLocal().intersects(ball.getBoundsInLocal())) {
+            		if (n.getBoundsInLocal().intersects(ball.getBoundsInParent())) {
             			System.out.println("After if");
             			if(ball.getLayoutX() < n.getLayoutX() || ball.getLayoutX() > n.getLayoutX()) {
-            				dx *= -1;
+            				ball.setDeltaX(dx *= -1);
+            				//dx = 0;
             			}
             			if(ball.getLayoutY() < n.getLayoutY() || ball.getLayoutY() > n.getLayoutY()) {
-            				dy *= -1;
+            				ball.setDeltaY(dy *= -1);
+            				//dy = 0;
             			}
             			
             			ball.setLayoutX(ball.getLayoutX() + dx);
