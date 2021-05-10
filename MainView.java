@@ -19,7 +19,7 @@ public class MainView extends Application {
     private PerspectiveCamera camera;
     private final double sceneWidth = 1000;
     private final double sceneHeight = 1000;
-    private final Rotate rotateX = new Rotate(50, Rotate.X_AXIS);
+    private final Rotate rotateX = new Rotate(1, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(1, Rotate.Y_AXIS);
     private Timeline timeLine;
     
@@ -31,49 +31,48 @@ public class MainView extends Application {
         
         Ball ball = new Ball(50,-50,0,sceneWidth/40);
         ball.init();
+        Paddle paddle = new Paddle(400,400,0,sceneWidth/40);
+        paddle.init();
+        GameBoarder boarder = new GameBoarder(sceneWidth,sceneHeight,30);
+        boarder.init();
+    	shapes.getChildren().addAll(ball,paddle);
+        shapes.getChildren().addAll(boarder.getBoarder().getChildren());
+        root.getChildren().add(shapes);
+        
 
         timeLine = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+
             double dx = 3;
             double dy = 3;
-
+            int o =0;
             @Override
             public void handle(final ActionEvent t) {
-            	ball.mvBall();
-            	for(Node n: shapes.getChildren()) {
-            		System.out.println(n.getBoundsInLocal());
-            		System.out.println(n.getBoundsInParent());
-            		System.out.println("Before if");
-            		if (n.getBoundsInLocal().intersects(ball.getBoundsInParent())) {
-            			System.out.println("After if");
-            			if(ball.getLayoutX() < n.getLayoutX() || ball.getLayoutX() > n.getLayoutX()) {
-            				ball.setDeltaX(dx *= -1);
-            				//dx = 0;
-            			}
-            			if(ball.getLayoutY() < n.getLayoutY() || ball.getLayoutY() > n.getLayoutY()) {
-            				ball.setDeltaY(dy *= -1);
-            				//dy = 0;
-            			}
-            			
-            			ball.setLayoutX(ball.getLayoutX() + dx);
-            			ball.setLayoutY(ball.getLayoutY() + dy);
-            		}
-            	}
+//            	if(ball.getLayoutX() < -440 || ball.getLayoutX() > 430) dx *= -1;
+//        		if(ball.getLayoutY() < -440 || ball.getLayoutY() > 430) dy *= -1;
+//        		
+        		ball.setLayoutX(ball.getLayoutX() + dx);
+        		ball.setLayoutY(ball.getLayoutY() + dy);
+        		for (Node n : shapes.getChildren()) {
+        			if(!(n instanceof Ball)) {
+        				
+        				
+        				
+        				o++;
+    					System.out.println("ball " +o+ ball.localToScreen(n.getBoundsInLocal()));
+        				if(ball.localToScreen(n.getBoundsInLocal()).intersects(n.localToScreen(n.getBoundsInLocal()))) {
+        					if(ball.getLayoutX() <= n.getLayoutX() || ball.getLayoutX() > n.getLayoutX()) dx *= -1;
+        					if(ball.getLayoutY() < n.getLayoutY() || ball.getLayoutY() > n.getLayoutY()) dy *= -1;       					
+        					
+        					System.out.println(n + " " +n.localToScreen(n.getBoundsInLocal()));
+        					System.out.println("o"+"ball " + ball.localToScreen(n.getBoundsInLocal()));
+        				}
+        			}
+        		}
             }
         }));
 
         timeLine.setCycleCount(Timeline.INDEFINITE);
-        
-        Paddle paddle = new Paddle(400,400,0,sceneWidth/40);
-        paddle.init();
-        
-    	shapes.getChildren().add(ball);
-    	shapes.getChildren().add(paddle);
-    	
-        GameBoarder boarder = new GameBoarder(sceneWidth,sceneHeight,30);
-        boarder.init();
-        
-        shapes.getChildren().addAll(boarder.getBoarder().getChildren());
-        root.getChildren().add(shapes);
+
         Scene scene = new Scene(root, sceneWidth, sceneHeight, true, SceneAntialiasing.BALANCED);
         scene.setFill(Color.GREY);
 
