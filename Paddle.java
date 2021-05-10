@@ -20,20 +20,24 @@ public class Paddle extends Cylinder{
 	
 	
 	public void init() {
-		this.setTranslateX(x);
-		this.setTranslateY(y);
+		this.relocate(x, y);
+//		this.setTranslateX(x);
+//		this.setTranslateY(y);
 	}
 
 
 	public void dragged(double mouseX, double mouseY) {
 		System.out.println("x = " + this.getTranslateX() + " y = " + y + " mouseX = " + mouseX + " mouseY = " + mouseY);
         
-		if(getTranslateX() > -440 && getTranslateX() < 430) {
-			if(x <= mouseX) setTranslateX(getTranslateX() + r);
-			else		setTranslateX(getTranslateX() - r);
-		}
+		this.setTranslateX(mouseX);
+		//this.setTranslateY(mouseY);
+//		if(getTranslateX() > -440 && getTranslateX() < 430) {
+//			//if(x <= mouseX) setTranslateX(getTranslateX() + r);
+//			//else		setTranslateX(getTranslateX() - r);
+//			this.setTranslateX(mouseX);
+//			this.setTranslateY(mouseY);
+//		}
 		
-		x = mouseX;
 	}
 	
 	public void setX(double x) {
