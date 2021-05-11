@@ -30,9 +30,9 @@ public class MainView extends Application {
     public void start(Stage stage) {
 
         
-        Ball ball = new Ball(500,500,0,sceneWidth/40);
+        Ball ball = new Ball(0,100,0,sceneWidth/40);
         ball.init();
-        Paddle paddle = new Paddle(500,900,0,sceneWidth/40);
+        Paddle paddle = new Paddle(0,300,0,sceneWidth/40);
         paddle.init();
         GameBoarder boarder = new GameBoarder(sceneWidth,sceneHeight,30);
         boarder.init();
@@ -41,53 +41,41 @@ public class MainView extends Application {
         root.getChildren().add(shapes);
         
 
-        timeLine = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+        timeLine = new Timeline(new KeyFrame(Duration.millis(3), new EventHandler<ActionEvent>() {
 
-            double dx = 3;
-            double dy = 3;
+            double dx = 2;
+            double dy = 2;
+            double vx =1;
+            double vy =1;
             int o = 0;
             @Override
-            public void handle(final ActionEvent t) {
-//            	if(ball.getLayoutX() < -440 || ball.getLayoutX() > 430) dx *= -1;
-//        		if(ball.getLayoutY() < -440 || ball.getLayoutY() > 430) dy *= -1;
-//        		
-        		ball.setLayoutX(ball.getLayoutX() + dx);
-        		ball.setLayoutY(ball.getLayoutY() + dy);
+            public void handle(final ActionEvent t) {  		
+        		ball.setLayoutX(ball.getLayoutX() + (dx*vy));
+        		ball.setLayoutY(ball.getLayoutY() + dy*vx);
         		for (Node n : shapes.getChildren()) {
-        			
-        			//System.out.println(n + ": " + n.getBoundsInParent());
-        			//System.out.println(n + ": " + n.getBoundsInLocal());
         			if(!(n instanceof Ball)) {
+        				o++;
         				Bounds item = n.getBoundsInParent();
         				Bounds circ = ball.getBoundsInParent();
         				if(circ.intersects(item)) {
-        					System.out.println("Collision between ball and item");
-        					if(ball.getLayoutX() <= n.getLayoutX() || ball.getLayoutX() > n.getLayoutX()) {
-        						dx *= -1;
+        					double th = +Math.atan((item.getCenterY()-circ.getCenterY())/(item.getCenterX()-circ.getCenterX()));
+        					System.out.println("ball x:" + circ.getCenterX() +"  y= " + circ.getCenterY());
+        					System.out.println("item x:" + item.getCenterX() +"  y= " + item.getCenterY());        					
+        					double dh = circ.getHeight()/2 + item.getHeight()/2;
+        					double xh = Math.abs(item.getCenterY()) -Math.abs(circ.getCenterY());
+        					double dw = circ.getWidth()/2 + item.getWidth()/2;
+        					double xw = Math.abs(item.getCenterX()) -Math.abs(circ.getCenterX());
+        					if(dh%xh < 4) {
+        						dy*= -1;
+        						System.out.println("y fliped");
         					}
-        					
-        					if(ball.getLayoutY() <= n.getLayoutY() || ball.getLayoutY() > n.getLayoutY()) {
-        						dy *= -1;
+        					if(dw%xw < 4) {
+        						dx*= -1;
+        						System.out.println("x fliped");
         					}
+        					System.out.println("dw = " +dw+ " xw = " +xw);
+        					System.out.println("dh = " +dh+ " xh = " +xh);
         				}
-        				
-        				
-        				
-//        				o++;
-//    					//System.out.println("ball " +o+ ball.localToScreen(n.getBoundsInLocal()));
-//        				if(ball.localToScreen(n.getBoundsInLocal()).intersects(n.localToScreen(n.getBoundsInLocal()))) {
-//        					if(ball.getLayoutX() <= n.getLayoutX() || ball.getLayoutX() > n.getLayoutX()) {
-//        						
-//        						dx *= -1;
-//        					}
-//        					if(ball.getLayoutY() <= n.getLayoutY() || ball.getLayoutY() > n.getLayoutY()) {
-//        						
-//        						dy *= -1;       					
-//        					}
-//        					
-//        					//System.out.println(n + " " +n.localToScreen(n.getBoundsInLocal()));
-//        					System.out.println("o"+"ball " + ball.localToScreen(n.getBoundsInLocal()));
-//        				}
         			}
         		}
             }
@@ -103,7 +91,7 @@ public class MainView extends Application {
         camera.setNearClip(0.1);
         camera.setFarClip(100000.0);
         camera.getTransforms().addAll (rotateX, rotateY, new Translate(0, 0, -2500));
-        camera.relocate(500, 500);
+       // camera.relocate(500, 500);
         scene.setCamera(camera);
         
         scene.setOnMousePressed(me -> {
