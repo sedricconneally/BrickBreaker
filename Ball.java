@@ -31,7 +31,9 @@ public class Ball extends Sphere{
 	
 	public void init() {
 		relocate(x, y);
-//      timeLine = new Timeline(new KeyFrame(Duration.millis(5), e -> mvBall()));
+//		this.setTranslateX(x);
+//		this.setTranslateY(x);
+//        timeLine = new Timeline(new KeyFrame(Duration.millis(5), e -> mvBall()));
 //		timeLine.setCycleCount(Timeline.INDEFINITE);
 		
 	}
@@ -43,19 +45,19 @@ public class Ball extends Sphere{
 //		
 //	}
 	
-	public void mvBall() {
+//	public void mvBall() {
 //		if(getLayoutX() < -440 || getLayoutX() > 430) {
 //			deltaX *= -1;
 //		}
 //		if(getLayoutY() < -440 || getLayoutY() > 430) {
 //			deltaY *= -1;
 //		}
-		
-		setLayoutX(getLayoutX() + deltaX);
-		setLayoutY( getLayoutY() + deltaY);
-		System.out.println("x = " + getLayoutX() + " y = " + getLayoutY());
-		
-	}
+//		
+//		setLayoutX(getLayoutX() + deltaX);
+//		setLayoutY( getLayoutY() + deltaY);
+//		System.out.println("x = " + getLayoutX() + " y = " + getLayoutY());
+//		
+//	}
 
 	public double getDeltaX() {
 		return deltaX;

@@ -30,10 +30,10 @@ public class GameBoarder {
 		
 	}
 	public void init() {
-		createWall(rightWall,s,h,s, new Point3D(width,z,z));
-		createWall(leftWall,s,h,s, new Point3D(0,z,z));
-		createWall(topWall,w,s,s, new Point3D(z,0,z));
-		createWall(bottomWall,w,s,s, new Point3D(z,height,z));		
+		createWall(rightWall,s,h,s, new Point3D(width/half,-width/half,z));
+		createWall(leftWall,s,h,s, new Point3D(-width/half,-width/half,z));
+		createWall(topWall,w,s,s, new Point3D(-width/half,height/half,z));
+		createWall(bottomWall,w,s,s, new Point3D(-width/half,-height/half,z));		
 	}
 	
 	private void createWall(Box wall, double width, double height, double depth, Point3D point) {

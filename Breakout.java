@@ -126,7 +126,7 @@ public class Breakout extends Application {
 					
 					double normRelIntersectX = (relIntersectX/(player.getWidth()/2));
 					double bounceAngle = normRelIntersectX * maxAngle;
-					
+					System.out.println(bounceAngle);
 					dotVelX = dotSpeed * Math.cos(bounceAngle);
 					dotVelY = dotSpeed * Math.sin(bounceAngle);
 				}

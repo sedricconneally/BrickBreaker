@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -7,6 +10,8 @@ import javafx.geometry.Bounds;
 import javafx.scene.*;
 import javafx.scene.input.PickResult;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -20,7 +25,7 @@ public class MainView extends Application {
     private PerspectiveCamera camera;
     private final double sceneWidth = 1000;
     private final double sceneHeight = 1000;
-    private final Rotate rotateX = new Rotate(1, Rotate.X_AXIS);
+    private final Rotate rotateX = new Rotate(50, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(1, Rotate.Y_AXIS);
     private Timeline timeLine;
     
@@ -36,8 +41,13 @@ public class MainView extends Application {
         paddle.init();
         GameBoarder boarder = new GameBoarder(sceneWidth,sceneHeight,30);
         boarder.init();
+        Bricks bricks = new Bricks();
+        bricks.init();
+		List<Node> br = new ArrayList<Node>();
+		br.addAll(bricks.getBricks().getChildren());
     	shapes.getChildren().addAll(ball,paddle);
         shapes.getChildren().addAll(boarder.getBoarder().getChildren());
+        shapes.getChildren().addAll(bricks.getBricks().getChildren());
         root.getChildren().add(shapes);
         
 
@@ -72,6 +82,12 @@ public class MainView extends Application {
         					if(dw%xw < 4) {
         						dx*= -1;
         						System.out.println("x fliped");
+        					}
+        					System.out.println("bouncing shape " +n);
+        					if(br.contains(n)) {
+            					System.out.println("bouncing shape remove " +n);
+            					br.remove(n);
+        						shapes.getChildren().remove(n);
         					}
         					System.out.println("dw = " +dw+ " xw = " +xw);
         					System.out.println("dh = " +dh+ " xh = " +xh);
