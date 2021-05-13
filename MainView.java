@@ -62,13 +62,16 @@ public class MainView extends Application {
 			@Override
 			public void handle(KeyEvent e) {
 				String code = e.getCode().toString();
-				System.out.println(code);
 
 				if (!codes.contains(code)) {
 					codes.add(code);
 				}
 				
 				if (code.equals("SPACE")) {
+					timeLine.play();
+				}
+				
+				if (code.equals("R")) {
 					timeLine.playFromStart();
 				}
 			}
@@ -110,6 +113,10 @@ public class MainView extends Application {
 				}
 				if (codes.contains("RIGHT")) {
 					paddle.move(3);
+				}
+				if (ball.getBoundsInParent().getCenterY() > 400) {
+					timeLine.stop();
+					scoreText.setText("GAME OVER!!");
 				}
         		for (Node n : shapes.getChildren()) {
         			if(!(n instanceof Ball)) {
