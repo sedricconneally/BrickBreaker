@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -9,10 +8,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.*;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.PickResult;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -23,23 +19,26 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainView extends Application {
-
-
-	private final Group root = new Group();
-	private Group shapes = new Group();
     private PerspectiveCamera camera;
     private final double sceneWidth = 1000;
     private final double sceneHeight = 1000;
     private final Rotate rotateX = new Rotate(1, Rotate.X_AXIS);
     private final Rotate rotateY = new Rotate(1, Rotate.Y_AXIS);
     private Timeline timeLine;
-    private int score = 0;
     Text scoreText;
-
+	Scene scene;
+	int score = 0;
+	
     @Override
     public void start(Stage stage) {
-
         
+        newGame(stage);
+    }
+
+    private void newGame(Stage stage) {
+
+    	Group root = new Group();
+    	Group shapes = new Group();
         Ball ball = new Ball(0,100,0,sceneWidth/40);
         ball.init();
         Paddle paddle = new Paddle(0,400,0,sceneWidth/40);
@@ -48,12 +47,13 @@ public class MainView extends Application {
         boarder.init();
         Bricks bricks = new Bricks();
         bricks.init();
+        score = 0;
         scoreText = new Text("Score: " + score);
         scoreText.setY(-510);
         scoreText.setFont(Font.font("Comic Sans MS", FontWeight.BOLD, FontPosture.REGULAR, 20));
 		scoreText.setFill(Color.WHITE);
 		scoreText.setStroke(Color.WHITE);
-		Scene scene = new Scene(root, sceneWidth, sceneHeight, true, SceneAntialiasing.BALANCED);
+		scene = new Scene(root, sceneWidth, sceneHeight, true, SceneAntialiasing.BALANCED);
         scene.setFill(Color.GREY);
 		List<String> codes = new ArrayList<String>();
 
@@ -72,7 +72,7 @@ public class MainView extends Application {
 				}
 				
 				if (code.equals("R")) {
-					timeLine.playFromStart();
+					newGame(stage);
 				}
 			}
 		});
@@ -116,7 +116,7 @@ public class MainView extends Application {
 				}
 				if (ball.getBoundsInParent().getCenterY() > 400) {
 					timeLine.stop();
-					scoreText.setText("GAME OVER!!");
+					scoreText.setText("GAME OVER!! Press R to restart");
 				}
         		for (Node n : shapes.getChildren()) {
         			if(!(n instanceof Ball)) {
@@ -150,6 +150,7 @@ public class MainView extends Application {
         					System.out.println("dw = " +dw+ " xw = " +xw);
         					System.out.println("dh = " +dh+ " xh = " +xh);
         					if (score == 270) {
+        						scoreText.setText("YOU WIN!!");
         						timeLine.stop();
         					}
         				}
@@ -171,9 +172,10 @@ public class MainView extends Application {
         stage.setTitle("Brick Breaker");
         stage.setScene(scene);
         stage.show();
-    }
+		
+	}
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
         launch(args);
     }
     
